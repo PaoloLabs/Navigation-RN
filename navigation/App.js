@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from  'react-navigation-stack';
+import { createBottomTabNavigator } from  'react-navigation-tabs';
 
 const Logo = () => <Text>Lalala</Text>
 
@@ -42,13 +43,12 @@ const DetalleScreen = ({ navigation }) => {
     navigation.setParams({ incrementar })
   }, [cont])
   const lala = navigation.getParam('lala', 'valor por defecto'); // cao de que no exista
-
   return (
     <View style={styles.container}>
       <Text>Soy la pantalla de detalle {cont}</Text>
       <Button
         title='volver'
-        onPress={() => navigation.setParams({ title: 'Usuario 1' })}
+        onPress={() => navigation.navigate('MiModal')}
       />
     </View>
   )
@@ -57,7 +57,7 @@ const DetalleScreen = ({ navigation }) => {
 DetalleScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   return {
     title: navigation.getParam('title', 'Cargando....'),
-    headerRight: (
+    headerRight: () => (
       <Button 
         onPress={navigation.getParam('incrementar')} 
         title='Mas 1'
@@ -71,7 +71,7 @@ DetalleScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   }
 }
 
-const AppNavigator = createStackNavigator({
+const AppNavigator = createBottomTabNavigator({
   Home: {
     screen: HomeScreen
   },
@@ -93,7 +93,16 @@ const AppNavigator = createStackNavigator({
   }
 });
 
-export default createAppContainer(AppNavigator);
+const RootStack = createStackNavigator({
+  Main: AppNavigator,
+  MiModal: () => <Text>Lalalalalal</Text>
+},
+{
+  mode: 'modal',
+  headerMode: 'none'
+});
+
+export default createAppContainer(RootStack);
 
 const styles = StyleSheet.create({
   container: {
