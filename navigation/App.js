@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from  'react-navigation-stack';
@@ -26,9 +27,9 @@ HomeScreen.navigationOptions = {
     title='Soy Lala'
     color='#222'
   />,
-  headerStyle: { 
-    backgroundColor: '#5e5'
-   },
+  // headerStyle: { 
+  //   backgroundColor: '#5e5'
+  //  },
   //  headerTintColor: '#fff', //cambia color de texto
   //  headerTitleStyle: {
   //    fontWeight: '500'
@@ -64,9 +65,9 @@ DetalleScreen.navigationOptions = ({ navigation, navigationOptions }) => {
         color='#6e6'
       />
     ),
-    headerStyle: {
-      backgroundColor: navigationOptions.headerStyle.backgroundColor
-    }
+    // headerStyle: {
+    //   backgroundColor: navigationOptions.headerStyle.backgroundColor
+    // }
     // headerTintColor: '#5e5', //cambia color de texto
   }
 }
@@ -81,16 +82,53 @@ const AppNavigator = createBottomTabNavigator({
 }, 
 { 
   initialRouteName: 'Home',
-  defaultNavigationOptions: { 
-    // Todos los parametros
-    headerStyle: {
-      backgroundColor: '#fec',
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      const { routeName } = navigation.state
+      let iconName;
+      if (routeName === 'Home') {
+        iconName = `ios-information-circle${focused ? '' : '-outline'}`
+      }
+      else {
+        iconName = 'ios-options'
+      }
+      return <Ionicons name={iconName} size={20} color={tintColor} />
     },
-    headerTintColor: '#555',
-    headerTitleStyle: {
-      fontWeight: '900',
+    tabBarOptions: {
+      activeTintColor: navigation.state.routeName == 'Home' ? '#e91e63' : 'orange',
+      inactiveTintColor: 'black',
+      labelStyle: {
+        fontSize: 16,
+      },
+      style: {
+        backgroundColor: '#fec'
+      }
     }
-  }
+  })
+  
+  // defaultNavigationOptions: { 
+  //   // Mavigation
+  //   // Todos los parametros
+  //   // headerStyle: {
+  //   //   backgroundColor: '#fec',
+  //   // },
+  //   // headerTintColor: '#555',
+  //   // headerTitleStyle: {
+  //   //   fontWeight: '900',
+  //   // }
+
+  //   //TabBar
+  //   tabBarOptions: {
+  //     activeTintColor: '#e91e63',
+  //     inactiveTintColor: 'black',
+  //     labelStyle: {
+  //       fontSize: 16,
+  //     },
+  //     style: {
+  //       backgroundColor: '#fec'
+  //     }
+  //   }
+  // }
 });
 
 const RootStack = createStackNavigator({
