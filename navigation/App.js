@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from  'react-navigation-stack';
@@ -20,8 +20,13 @@ const HomeScreen = ({ navigation }) => {
 HomeScreen.navigationOptions = {
   // title: 'Home',
   headerTitle: () => <Logo />,
+  headerRight: () => <Button 
+    onPress={()=> alert('lalalalalalalala')}
+    title='Soy Lala'
+    color='#222'
+  />,
   headerStyle: { 
-    backgroundColor: '#222'
+    backgroundColor: '#5e5'
    },
   //  headerTintColor: '#fff', //cambia color de texto
   //  headerTitleStyle: {
@@ -30,12 +35,17 @@ HomeScreen.navigationOptions = {
 }
 
 const DetalleScreen = ({ navigation }) => {
+  const [cont, setCont] = useState(0)
+  const incrementar = () => setCont(cont + 1)
 
+  useEffect(() => {
+    navigation.setParams({ incrementar })
+  }, [cont])
   const lala = navigation.getParam('lala', 'valor por defecto'); // cao de que no exista
 
   return (
     <View style={styles.container}>
-      <Text>Soy la pantalla de detalle {lala}</Text>
+      <Text>Soy la pantalla de detalle {cont}</Text>
       <Button
         title='volver'
         onPress={() => navigation.setParams({ title: 'Usuario 1' })}
@@ -47,6 +57,13 @@ const DetalleScreen = ({ navigation }) => {
 DetalleScreen.navigationOptions = ({ navigation, navigationOptions }) => {
   return {
     title: navigation.getParam('title', 'Cargando....'),
+    headerRight: (
+      <Button 
+        onPress={navigation.getParam('incrementar')} 
+        title='Mas 1'
+        color='#6e6'
+      />
+    ),
     headerStyle: {
       backgroundColor: navigationOptions.headerStyle.backgroundColor
     }
